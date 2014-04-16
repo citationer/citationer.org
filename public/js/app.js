@@ -8,11 +8,12 @@ $(document).ready(function() {
 
   function appendCitation(citation) {
     var c = citation.replace(/</, "&lt;").replace(/>/, "&gt;");
-      output.append(
-          '<div class="citation">'
-          + c
-          + '</div>'
-      );
+    output.append(
+      '<div class="citation">'
+      + c
+      + '</div>'
+    );
+    exportBtn.css("display", "block");
   }
 
   // Load citations if there are some...
