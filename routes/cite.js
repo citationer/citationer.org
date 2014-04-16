@@ -4,6 +4,10 @@ module.exports = function(req, res) {
   var query = req.query.q;
   var url;
 
+  if (!(/\w+/.test(query))) {
+    res.send(400, "Bad query");
+  }
+
   if (!(/^https?/.test(query))) {
     url = "http://" + query;
   }

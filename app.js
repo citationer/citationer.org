@@ -1,5 +1,11 @@
+var domain = require("domain");
 var express = require("express");
-var hbs = require("express-hbs");
+
+var d = domain.create();
+
+d.on("error", function(err) {
+  console.error(err);
+});
 
 var app = express();
 
@@ -13,6 +19,7 @@ if (app.get("env") === "development") {
 
 require("./routes/index")(app);
 
-app.listen(config.port);
+d.run(function() {
+  app.listen(config.port);
+});
 console.log("Listening on port", config.port);
-

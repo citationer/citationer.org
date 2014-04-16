@@ -1,18 +1,21 @@
 $(document).ready(function() {
   var input = $("#input");
   var output = $("#output");
+  var citationStatus = $(".citation-status");
+  var exportBtn = $(".export");
 
   var citations = [];
 
   function appendCitation(citation) {
+    var c = citation.replace(/</, "&lt;").replace(/>/, "&gt;");
       output.append(
           '<div class="citation">'
-          + citation
+          + c
           + '</div>'
       );
   }
 
-  console.log(sessionStorage.getItem("citations"));
+  // Load citations if there are some...
   if (sessionStorage.getItem("citations")) {
     citations = JSON.parse(sessionStorage.getItem("citations"));
     citations.forEach(function(citation) {
@@ -41,13 +44,42 @@ $(document).ready(function() {
       saveCitations();
     }
   }
+
+  function clearInput() {
+    input.val("");
+  }
   
+  function showLoadingIndicator() {
+    citationStatus
+    .removeClass("fa-link")
+    .addClass("fa-spinner")
+    .addClass("spin");
+  }
+
+  function hideLoadingIndicator() {
+    citationStatus
+    .removeClass("fa-spinner")
+    .removeClass("spin")
+    .addClass("fa-link");
+  }
+
   function inputAction() {
     var url = input.val();
   
-    $.get("/cite?q=" + encodeURIComponent(url))
+    showLoadingIndicator();
+    $.ajax({
+      url: "/cite?q=" + encodeURIComponent(url),
+      method: "GET",
+      timeout: 2000
+    })
     .done(function(data) {
+      hideLoadingIndicator();
+      clearInput();
       addCitation(data);
+    })
+    .fail(function(err) {
+      hideLoadingIndicator();
+      clearInput();
     });
   }
 
@@ -56,5 +88,20 @@ $(document).ready(function() {
       // Enter key
       inputAction();
     }
+  });
+
+  exportBtn.on("click", function() {
+    var i = 1;
+    var exports = "";
+
+    citations.forEach(function(citation) {
+      exports += i + ". " + citation + "\n";
+      i++;
+    });
+
+    console.log(exports);
+    $("#export-modal .modal-body").text(exports);
+
+    $("#export-modal").modal("show");
   });
 });
