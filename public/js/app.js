@@ -94,7 +94,7 @@ $(document).ready(function() {
     var exports = "";
 
     citations.forEach(function(citation) {
-      exports += i + ". " + citation + "\n";
+      exports += i + ". " + citation.replace(/\n/g, " ") + "\n";
       i++;
     });
 
