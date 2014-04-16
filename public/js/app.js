@@ -70,7 +70,7 @@ $(document).ready(function() {
     $.ajax({
       url: "/cite?q=" + encodeURIComponent(url),
       method: "GET",
-      timeout: 2000
+      timeout: 12000
     })
     .done(function(data) {
       hideLoadingIndicator();
@@ -79,7 +79,6 @@ $(document).ready(function() {
     })
     .fail(function(err) {
       hideLoadingIndicator();
-      clearInput();
     });
   }
 
