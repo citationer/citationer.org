@@ -94,14 +94,24 @@ $(document).ready(function() {
     var i = 1;
     var exports = "";
 
-    citations.forEach(function(citation) {
+    citations.forEach(function(citation, num) {
       exports += i + ". " + citation.replace(/\n/g, " ") + "\n";
       i++;
     });
 
     console.log(exports);
-    $("#export-modal .modal-body").text(exports);
+    var textArea = $("#export-modal .modal-body textarea");
+    textArea.val(exports);
+
 
     $("#export-modal").modal("show");
+    textArea.on("focus", function() {
+      textArea[0].select();
+
+      textArea.on("mouseup", function() {
+        textArea[0].onmouseup = null;
+        return false;
+      });
+    });
   });
 });
