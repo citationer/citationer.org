@@ -3,6 +3,7 @@ var express = require("express");
 
 var d = domain.create();
 
+// Yes, yes .. this is bad, but citation.js is still a bit unstable.
 d.on("error", function(err) {
   console.error(err);
 });

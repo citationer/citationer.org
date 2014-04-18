@@ -1,3 +1,11 @@
+.no-select() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none; 
+}
+
 body {
   background: radial-gradient(center center, circle closest-corner, rgb(46, 204, 102) 0%, rgb(21, 148, 76) 100%);
 }
@@ -44,6 +52,20 @@ body {
   }
 }
 
+.submit {
+  .no-select();
+
+  transition: all 0.26s ease-in-out;
+}
+
+.submit:hover {
+  background-color: darken(rgb(29, 168, 204), 4%);
+}
+
+.submit.error {
+  background-color: rgb(178, 128, 98);
+}
+
 button.btn.btn-export {
   height: 40px;
   min-width: 80px;
@@ -55,6 +77,7 @@ button.btn.btn-export {
   font-family: "Source Sans Pro";
   font-size: 18px;
   color: rgb(255, 255, 255);
+  .no-select();
 }
 
 .input-group-addon {

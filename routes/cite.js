@@ -2,24 +2,27 @@ var Citation = require("citation.js");
 
 module.exports = function(req, res) {
   var query = req.query.q;
-  var url;
+  var host;
 
   if (!(/\w+/.test(query))) {
     res.send(400, "Bad query");
   }
 
   if (!(/^https?/.test(query))) {
-    url = "http://" + query;
+    host = "http://" + query;
   }
   else {
-    url = query;
+    host = query;
   }
 
-  var citation = new Citation(url);
+  var citation = new Citation(host);
 
   citation.getMlaReference(function(err, ref) {
     if (err) {
       return res.send(500, err) && console.log(err);
+    }
+    if (!ref) {
+      return res.send(500, "Bad reference");
     }
     res.send(ref);
   });

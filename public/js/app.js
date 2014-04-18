@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var input = $("#input");
   var output = $("#output");
+  var submitBtn = $(".submit");
   var citationStatus = $(".citation-status");
   var exportBtn = $(".export");
 
@@ -66,6 +67,10 @@ $(document).ready(function() {
 
   function inputAction() {
     var url = input.val();
+
+    if (!url) {
+      return null;
+    }
   
     showLoadingIndicator();
     $.ajax({
@@ -79,6 +84,10 @@ $(document).ready(function() {
       addCitation(data);
     })
     .fail(function(err) {
+      submitBtn.addClass("error");
+      setTimeout(function() {
+        submitBtn.removeClass("error");
+      }, 1800);
       hideLoadingIndicator();
     });
   }
@@ -89,6 +98,7 @@ $(document).ready(function() {
       inputAction();
     }
   });
+  submitBtn.on("click", inputAction);
 
   exportBtn.on("click", function() {
     var i = 1;
