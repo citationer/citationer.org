@@ -100,11 +100,22 @@ button.btn.btn-export {
   animation: rotate infinite 0.8s;
 }
 
+@keyframes delete {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(-240%, 0);
+  }
+}
+
 .results {
   min-height: 400px;
   margin-top: 40px;
 
   .citation {
+    position: relative;
     min-height: 40px;
     margin: 6px 0;
     padding: 12px;
@@ -114,6 +125,31 @@ button.btn.btn-export {
     border: 1px solid;
 
     border-color: rgb(126, 126, 205);
+
+    .content {
+      padding-right: 16px;
+    }
+
+    .remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+
+      font-size: 20px;
+
+      transition: all 0.6s ease-in;
+    }
+
+    .remove:hover {
+      color: rgb(255, 138, 76);
+    }
+  }
+
+  .citation.delete {
+    animation: delete 1.42s;
   }
 }
 

@@ -10,13 +10,17 @@ d.on("error", function(err) {
 
 var app = express();
 
+app.disable("x-powered-by");
+
 var config = require("./config.json")[app.get("env")];
 
 if (app.get("env") === "development") {
   app.use(express.errorHandler());
   app.use(express.logger("dev"));
-  app.use(express.static(__dirname + "/public"));
 }
+
+// Meh, more convenient than configuring nginx
+app.use(express.static(__dirname + "/public"));
 
 require("./routes/index")(app);
 

@@ -7,26 +7,59 @@ $(document).ready(function() {
 
   var citations = [];
 
-  function appendCitation(citation) {
+  function saveCitations() {
+    sessionStorage.setItem("citations", JSON.stringify(citations));
+  }
+
+  function appendCitation(citation, index) {
+    if (!citation) {
+      return;
+    }
+
     var c = citation.replace(/</, "&lt;").replace(/>/, "&gt;");
     output.append(
-      '<div class="citation">'
-      + c
+      '<div class="citation" data-index="' + index + '">'
+        + '<div class="content">'
+        + c
+        + '</div>'
+        + '<div class="remove">'
+          + '<i class="fa fa-times-circle"> </i>'
+        + '</div>'
       + '</div>'
     );
     exportBtn.css("display", "block");
   }
 
-  // Load citations if there are some...
-  if (sessionStorage.getItem("citations")) {
-    citations = JSON.parse(sessionStorage.getItem("citations"));
-    citations.forEach(function(citation) {
-      appendCitation(citation);
+  function enableDeletion() {
+    var deleteButtons = $(".citation .remove");
+
+    deleteButtons.on("click", function() {
+      $(this).parent().addClass("delete");
+      var index = parseInt($(this).parent().attr("data-index"));
+      setTimeout(function() {
+        citations[index] = null;
+        syncCitations();
+      }, 1100);
     });
   }
 
-  function saveCitations() {
-    sessionStorage.setItem("citations", JSON.stringify(citations));
+  function syncCitations() {
+    $(".citation").remove();
+    citations.forEach(function(citation, i) {
+      if (citation) {
+        appendCitation(citation, i);
+      }
+    });
+    enableDeletion();
+    saveCitations();
+  }
+
+  // On load, load citations if there are some...
+  if (sessionStorage.getItem("citations")) {
+    citations = JSON.parse(sessionStorage.getItem("citations"));
+    citations.forEach(function(citation, i) {
+      appendCitation(citation, i);
+    });
   }
 
   function addCitation(citation) {
@@ -41,9 +74,7 @@ $(document).ready(function() {
 
     if (!found) {
       citations.push(citation);
-
-      appendCitation(citation);
-      saveCitations();
+      syncCitations();
     }
   }
 
@@ -104,7 +135,7 @@ $(document).ready(function() {
     var i = 1;
     var exports = "";
 
-    citations.forEach(function(citation, num) {
+    citations.forEach(function(citation) {
       exports += i + ". " + citation.replace(/\n/g, " ") + "\n";
       i++;
     });
