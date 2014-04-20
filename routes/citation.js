@@ -8,7 +8,7 @@ client.on("error", function(err) {
   console.error(err);
 });
 
-module.exports = function(req, res) {
+module.exports.cite = function(req, res) {
   var query = req.query.q;
   var host;
 
@@ -43,5 +43,20 @@ module.exports = function(req, res) {
       client.expire(host, 1e3 * 60 * 60 * 24); // 1 day
       res.send(ref);
     });
+  });
+};
+
+module.exports.cached = function(req, res) {
+  client.keys("*", function(err, keys) {
+    if (!err) {
+      res.send(keys.filter(function(key) {
+        // Redis databases can leak session ids (like my testing DB now ;)
+        return /^https?:\/\//.test(key);
+      }));
+    }
+    else {
+      console.log(err);
+      res.send(500);
+    }
   });
 };

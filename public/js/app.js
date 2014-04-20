@@ -34,12 +34,18 @@ $(document).ready(function() {
     var deleteButtons = $(".citation .remove");
 
     deleteButtons.on("click", function() {
-      $(this).parent().addClass("delete");
+      var item = $(this).parent();
+      item.addClass("delete");
       var index = parseInt($(this).parent().attr("data-index"));
       setTimeout(function() {
-        citations[index] = null;
-        syncCitations();
-      }, 1100);
+          item.animate({
+            minHeight: "0px",
+            maxHeight: "0px"
+          }, 60, function() {
+            citations[index] = null;
+            syncCitations();
+          });
+      }, 700);
     });
   }
 
@@ -57,9 +63,7 @@ $(document).ready(function() {
   // On load, load citations if there are some...
   if (sessionStorage.getItem("citations")) {
     citations = JSON.parse(sessionStorage.getItem("citations"));
-    citations.forEach(function(citation, i) {
-      appendCitation(citation, i);
-    });
+    syncCitations();
   }
 
   function addCitation(citation) {
@@ -118,7 +122,7 @@ $(document).ready(function() {
       submitBtn.addClass("error");
       setTimeout(function() {
         submitBtn.removeClass("error");
-      }, 1800);
+      }, 1400);
       hideLoadingIndicator();
     });
   }
@@ -136,8 +140,10 @@ $(document).ready(function() {
     var exports = "";
 
     citations.forEach(function(citation) {
-      exports += i + ". " + citation.replace(/\n/g, " ") + "\n";
-      i++;
+      if (citation) {
+        exports += i + ". " + citation.replace(/\n/g, " ") + "\n";
+        i++;
+      }
     });
 
     console.log(exports);
