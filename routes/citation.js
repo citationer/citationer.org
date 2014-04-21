@@ -40,7 +40,7 @@ module.exports.cite = function(req, res) {
       }
 
       client.set(host, ref);
-      client.expire(host, 1e3 * 60 * 60 * 24); // 1 day
+      client.expire(host, 1 * 60 * 60 * 24 * 2); // 2 days
       res.send(ref);
     });
   });
