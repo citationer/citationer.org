@@ -7,6 +7,8 @@
 }
 
 body {
+  background-color: rgb(46, 204, 102);
+  background: -moz-radial-gradient(center center, circle closest-corner, rgb(46, 204, 102) 0%, rgb(21, 148, 76) 100%);
   background: radial-gradient(center center, circle closest-corner, rgb(46, 204, 102) 0%, rgb(21, 148, 76) 100%);
 }
 
@@ -47,8 +49,9 @@ body {
 .input-group {
   input[type="text"] {
     background-color: rgb(242, 243, 255);
-    border-color: rgb(221, 226, 234);
+    border-color: rgb(171, 176, 184);
     transition: all 0.8s ease-in-out;
+    box-shadow: none;
   }
 }
 
@@ -122,7 +125,7 @@ button.btn.btn-export {
     padding: 12px;
 
     border-radius: 4px;
-    background-color: rgb(221, 249, 255);
+    background-color: rgb(231, 249, 255);
     border: 1px solid;
 
     border-color: rgb(126, 126, 205);
@@ -133,20 +136,20 @@ button.btn.btn-export {
 
     .remove {
       position: absolute;
-      top: 0;
-      right: 2px;
+      top: -3px;
+      right: 0px;
       width: 20px;
       height: 20px;
       cursor: pointer;
 
       font-size: 20px;
-      color: rgb(126, 166, 205);
+      color: rgb(116, 136, 166);
 
       transition: all 0.6s ease-in;
     }
 
     .remove:hover {
-      color: rgb(245, 108, 76);
+      color: rgb(225, 108, 76);
     }
   }
 
